@@ -44,11 +44,14 @@ public class GenerateInfoFiles {
      */
     public static void main(String[] args) {
 
-        try {
-            crearCarpetaVentas();
-            createProductsFile(10);
-            createSalesManInfoFile(4);
-            crearArchivosDeVentas();
+    	try {
+    	    crearCarpetaVentas();
+    	    limpiarArchivosDeVentas();
+
+    	    createProductsFile(10);
+
+    	    createSalesManInfoFile(4);
+    	    crearArchivosDeVentas();
 
             System.out.println(
                 "PROCESO EXITOSO: archivos de prueba creados."
