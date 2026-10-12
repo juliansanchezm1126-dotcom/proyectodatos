@@ -1,0 +1,27 @@
+CONCLUSIONES
+
+1. Aprendizajes adquiridos durante el proyecto
+
+Durante el desarrollo de este proyecto de programación en Java, aprendí a trabajar con archivos de texto, organizar y procesar información, utilizar clases y objetos, y generar reportes en formato CSV. También comprendí la importancia de clasificar los datos, realizar cálculos y ordenar los resultados para facilitar su interpretación y análisis.
+
+El proyecto me permitió fortalecer mis conocimientos de programación, desarrollar una mayor capacidad para resolver problemas y comprender cómo la tecnología puede utilizarse para transformar datos en información útil para la toma de decisiones. Asimismo, aprendí la importancia de organizar el código, documentarlo correctamente y realizar pruebas para verificar que el programa funcione de acuerdo con los requisitos establecidos.
+
+2. Aplicaciones en mi vida laboral y profesional
+
+Actualmente trabajo en Vajillas Corona como operador mecánico y, al mismo tiempo, me encuentro estudiando Ingeniería Industrial. Mi objetivo profesional es desempeñarme como facilitador o supervisor de procesos, asumir mayores responsabilidades y contribuir al mejoramiento continuo de las operaciones industriales.
+
+Los conocimientos adquiridos en este proyecto tienen una relación importante con mis actividades laborales y con mi futuro profesional. En una empresa manufacturera, la información es fundamental para analizar el comportamiento de los procesos, identificar oportunidades de mejora y tomar decisiones que contribuyan al cumplimiento de los objetivos de producción.
+
+Por ejemplo, el manejo y análisis de datos puede ayudar a controlar indicadores de producción, identificar pérdidas de tiempo, revisar consumos de materiales, analizar costos y detectar oportunidades para reducir desperdicios. De igual manera, la automatización del procesamiento de información puede disminuir tareas manuales, reducir errores y facilitar la elaboración de reportes para el seguimiento de los resultados.
+
+Como futuro ingeniero industrial, considero que combinar los conocimientos de programación con la experiencia adquirida en planta me permitirá proponer soluciones prácticas, mejorar la eficiencia de los procesos, optimizar los recursos disponibles y apoyar la toma de decisiones basada en datos.
+
+Además, como futuro facilitador o supervisor, estos conocimientos pueden ayudarme a comunicar mejor los resultados al equipo de trabajo, realizar seguimiento a los indicadores, orientar al personal hacia el cumplimiento de las metas y promover una cultura de mejoramiento continuo, trabajo en equipo y uso eficiente de los recursos.
+
+3. Dificultades presentadas durante el proyecto
+
+Durante el desarrollo del proyecto, uno de los principales retos fue comprender cómo organizar la información de entrada, procesarla correctamente y generar los reportes solicitados. También fue necesario verificar el funcionamiento de las clases, revisar la ejecución del programa y comprobar que los archivos de resultados se generaran de manera correcta y ordenada.
+
+Estas dificultades me permitieron reconocer la importancia de realizar pruebas, revisar los resultados y corregir posibles errores antes de considerar terminado un programa. También comprendí que una solución tecnológica debe cumplir con los requisitos establecidos y producir información confiable para que pueda utilizarse en la toma de decisiones.
+
+Finalmente, este proyecto fortaleció mi interés por integrar la programación y las herramientas tecnológicas con la Ingeniería Industrial. Considero que el aprendizaje obtenido representa una base para continuar desarrollando competencias que me permitan aportar al mejoramiento de los procesos, la reducción de costos, la automatización de actividades y la dirección de equipos de trabajo en mi futuro desempeño profesional.
