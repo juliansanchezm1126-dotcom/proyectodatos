@@ -9,238 +9,252 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Programa encargado de generar los archivos de prueba
- * para el proyecto de procesamiento de ventas.
+ * Genera archivos de prueba para el sistema de procesamiento de ventas.
+ * Crea productos, vendedores y archivos individuales de ventas.
+ *
+ * @author
  */
 public class GenerateInfoFiles {
 
-    // Generador de numeros aleatorios
-    private static Random random = new Random();
+    private static final Random RANDOM = new Random();
 
-    // Listas utilizadas para crear datos de prueba
-    private static String[] nombres = {
+    private static final String[] NOMBRES = {
         "Juan", "Carlos", "Maria", "Ana",
         "Pedro", "Laura", "Luis", "Sofia"
     };
 
-    private static String[] apellidos = {
+    private static final String[] APELLIDOS = {
         "Gomez", "Perez", "Rodriguez", "Martinez",
         "Lopez", "Garcia", "Sanchez", "Torres"
     };
 
-    private static String[] productos = {
+    private static final String[] PRODUCTOS = {
         "Cuaderno", "Esfero", "Lapiz", "Borrador",
         "Regla", "Carpeta", "Marcador", "Tijeras",
         "Resaltador", "Pincel"
     };
 
-    // Lista para guardar los vendedores creados
-    private static List<Vendedor> vendedores = new ArrayList<Vendedor>();
+    private static final List<Vendedor> VENDEDORES =
+            new ArrayList<Vendedor>();
 
     /**
-     * Metodo principal.
+     * Punto de entrada del programa generador.
+     *
+     * @param args argumentos de ejecución
      */
     public static void main(String[] args) {
 
         try {
-
             crearCarpetaVentas();
-
             createProductsFile(10);
-
             createSalesManInfoFile(4);
-
             crearArchivosDeVentas();
 
             System.out.println(
-                "FINALIZACION EXITOSA: Los archivos fueron creados correctamente."
+                "PROCESO EXITOSO: archivos de prueba creados."
             );
 
-        } catch (IOException e) {
-
+        } catch (IOException | IllegalArgumentException e) {
             System.out.println(
-                "ERROR: No fue posible crear los archivos."
+                "ERROR AL GENERAR LOS ARCHIVOS: " + e.getMessage()
             );
-
-            System.out.println("Detalle: " + e.getMessage());
         }
     }
 
     /**
-     * Crea la carpeta donde se guardaran los archivos
-     * de ventas de los vendedores.
+     * Crea la carpeta que contiene los archivos de ventas.
+     *
+     * @throws IOException si no es posible crear la carpeta
      */
-    public static void crearCarpetaVentas() {
+    public static void crearCarpetaVentas() throws IOException {
 
         File carpeta = new File("ventas");
 
-        if (!carpeta.exists()) {
-            carpeta.mkdir();
+        if (carpeta.exists() && !carpeta.isDirectory()) {
+            throw new IOException(
+                "Existe un archivo llamado ventas; se necesita una carpeta."
+            );
+        }
+
+        if (!carpeta.exists() && !carpeta.mkdirs()) {
+            throw new IOException(
+                "No fue posible crear la carpeta ventas."
+            );
         }
     }
 
     /**
-     * Crea un archivo de ventas para un vendedor.
+     * Genera un archivo individual con las ventas de un vendedor.
      *
-     * @param randomSalesCount cantidad de ventas
-     * @param name nombre del vendedor
-     * @param id numero de documento del vendedor
+     * @param randomSalesCount cantidad de ventas por generar
+     * @param name nombre que identifica al vendedor
+     * @param id número de documento del vendedor
+     * @throws IOException si ocurre un error al escribir el archivo
      */
     public static void createSalesMenFile(
             int randomSalesCount, String name, long id)
             throws IOException {
 
-        String nombreArchivo =
-            "ventas" + File.separator + name + "_" + id + ".txt";
-
-        BufferedWriter escritor =
-            new BufferedWriter(new FileWriter(nombreArchivo));
-
-        // Primera linea: documento del vendedor
-        escritor.write("CC;" + id);
-        escritor.newLine();
-
-        // Se generan las ventas
-        for (int i = 0; i < randomSalesCount; i++) {
-
-            int idProducto = random.nextInt(10) + 1;
-            int cantidad = random.nextInt(5) + 1;
-
-            escritor.write(
-                idProducto + ";" + cantidad + ";"
+        if (randomSalesCount < 0) {
+            throw new IllegalArgumentException(
+                "La cantidad de ventas no puede ser negativa."
             );
-
-            escritor.newLine();
         }
 
-        escritor.close();
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                "El nombre del vendedor no puede estar vacío."
+            );
+        }
+
+        if (id <= 0) {
+            throw new IllegalArgumentException(
+                "El documento debe ser positivo."
+            );
+        }
+
+        crearCarpetaVentas();
+
+        String nombreArchivo = "ventas" + File.separator
+                + name + "_" + id + ".txt";
+
+        try (BufferedWriter escritor =
+                new BufferedWriter(new FileWriter(nombreArchivo))) {
+
+            escritor.write("CC;" + id);
+            escritor.newLine();
+
+            for (int i = 0; i < randomSalesCount; i++) {
+                int idProducto = RANDOM.nextInt(10) + 1;
+                int cantidad = RANDOM.nextInt(5) + 1;
+
+                escritor.write(idProducto + ";" + cantidad);
+                escritor.newLine();
+            }
+        }
     }
 
     /**
-     * Crea el archivo productos.txt.
+     * Genera el archivo productos.txt.
      *
-     * @param productsCount cantidad de productos
+     * @param productsCount cantidad de productos por generar
+     * @throws IOException si ocurre un error al escribir el archivo
      */
     public static void createProductsFile(
             int productsCount) throws IOException {
 
-        BufferedWriter escritor =
-            new BufferedWriter(new FileWriter("productos.txt"));
-
-        for (int i = 0; i < productsCount; i++) {
-
-            int id = i + 1;
-
-            String nombre =
-                productos[i % productos.length];
-
-            int precio =
-                (random.nextInt(99) + 2) * 500;
-
-            escritor.write(
-                id + ";" + nombre + ";" + precio
+        if (productsCount <= 0) {
+            throw new IllegalArgumentException(
+                "Debe generarse al menos un producto."
             );
-
-            escritor.newLine();
         }
 
-        escritor.close();
+        try (BufferedWriter escritor =
+                new BufferedWriter(new FileWriter("productos.txt"))) {
+
+            for (int i = 0; i < productsCount; i++) {
+                int id = i + 1;
+                String nombre = PRODUCTOS[i % PRODUCTOS.length];
+                int precio = (RANDOM.nextInt(99) + 2) * 500;
+
+                escritor.write(id + ";" + nombre + ";" + precio);
+                escritor.newLine();
+            }
+        }
     }
 
     /**
-     * Crea el archivo vendedores.txt.
+     * Genera el archivo vendedores.txt y carga los vendedores creados.
      *
-     * @param salesmanCount cantidad de vendedores
+     * @param salesmanCount cantidad de vendedores por generar
+     * @throws IOException si ocurre un error al escribir el archivo
      */
     public static void createSalesManInfoFile(
             int salesmanCount) throws IOException {
 
-        BufferedWriter escritor =
-            new BufferedWriter(new FileWriter("vendedores.txt"));
-
-        vendedores.clear();
-
-        for (int i = 0; i < salesmanCount; i++) {
-
-            String tipoDocumento = "CC";
-
-            long numeroDocumento =
-                1000000000L + random.nextInt(900000000);
-
-            String nombre =
-                nombres[i % nombres.length];
-
-            String apellido =
-                apellidos[i % apellidos.length];
-
-            // Se guarda el vendedor en la lista
-            Vendedor vendedor = new Vendedor(
-                tipoDocumento,
-                numeroDocumento,
-                nombre,
-                apellido
+        if (salesmanCount <= 0) {
+            throw new IllegalArgumentException(
+                "Debe generarse al menos un vendedor."
             );
-
-            vendedores.add(vendedor);
-
-            // Se escribe el vendedor en el archivo
-            escritor.write(
-                tipoDocumento + ";" +
-                numeroDocumento + ";" +
-                nombre + ";" +
-                apellido
-            );
-
-            escritor.newLine();
         }
 
-        escritor.close();
+        VENDEDORES.clear();
+
+        try (BufferedWriter escritor =
+                new BufferedWriter(new FileWriter("vendedores.txt"))) {
+
+            for (int i = 0; i < salesmanCount; i++) {
+                String tipoDocumento = "CC";
+                long numeroDocumento =
+                        1000000000L + i + RANDOM.nextInt(1000000);
+
+                String nombre = NOMBRES[i % NOMBRES.length];
+                String apellido = APELLIDOS[i % APELLIDOS.length];
+
+                Vendedor vendedor = new Vendedor(
+                    tipoDocumento,
+                    numeroDocumento,
+                    nombre,
+                    apellido
+                );
+
+                VENDEDORES.add(vendedor);
+
+                escritor.write(
+                    tipoDocumento + ";" + numeroDocumento + ";"
+                    + nombre + ";" + apellido
+                );
+
+                escritor.newLine();
+            }
+        }
     }
 
     /**
-     * Crea un archivo de ventas para cada vendedor.
+     * Genera un archivo de ventas para cada vendedor registrado.
+     *
+     * @throws IOException si ocurre un error al escribir los archivos
      */
-    public static void crearArchivosDeVentas()
-            throws IOException {
+    public static void crearArchivosDeVentas() throws IOException {
 
-        for (Vendedor vendedor : vendedores) {
+        for (Vendedor vendedor : VENDEDORES) {
+            int cantidadVentas = RANDOM.nextInt(6) + 5;
 
-            int cantidadVentas =
-                random.nextInt(6) + 5;
-
-            String nombre =
-                vendedor.nombre + "_" +
-                vendedor.apellido;
+            String nombreArchivo = vendedor.getNombre() + "_"
+                    + vendedor.getApellido();
 
             createSalesMenFile(
                 cantidadVentas,
-                nombre,
-                vendedor.numeroDocumento
+                nombreArchivo,
+                vendedor.getNumeroDocumento()
             );
         }
     }
-
     /**
-     * Clase utilizada para guardar temporalmente
-     * la informacion de cada vendedor.
+     * Elimina los archivos de ventas anteriores.
+     *
+     * @throws IOException si no se pueden eliminar los archivos antiguos
      */
-    private static class Vendedor {
+    public static void limpiarArchivosDeVentas() throws IOException {
+        File carpeta = new File("ventas");
 
-        String tipoDocumento;
-        long numeroDocumento;
-        String nombre;
-        String apellido;
-
-        public Vendedor(
-                String tipoDocumento,
-                long numeroDocumento,
-                String nombre,
-                String apellido) {
-
-            this.tipoDocumento = tipoDocumento;
-            this.numeroDocumento = numeroDocumento;
-            this.nombre = nombre;
-            this.apellido = apellido;
+        if (!carpeta.exists()) {
+            return;
         }
-    }
-}
+
+        File[] archivos = carpeta.listFiles();
+
+        if (archivos == null) {
+            throw new IOException("No se pudo leer la carpeta ventas.");
+        }
+
+        for (File archivo : archivos) {
+            if (archivo.isFile() && archivo.getName().endsWith(".txt")) {
+                if (!archivo.delete()) {
+                    throw new IOException(
+                        "No se pudo eliminar el archivo: " + archivo.getName()
+                    );
+                }
+            }
+        }
+    }}
